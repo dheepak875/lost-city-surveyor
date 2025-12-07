@@ -66,11 +66,11 @@ const tools: Tool[] = [
     cost: 60,
     icon: "🤖",
     image: "/game-icons/terraquest.png",
-    shortDesc: "Reveals ALL hidden structures (one-time use)",
-    subtitle: "Autonomous Hybrid Vehicle",
-    description: "TerraQuest - an unmanned autonomous vehicle that can fly like a drone and drive like a rover, equipped to see above and below the earth's surface combined with a unique Archaeological Scoring system.",
-    science: "Combining aerial LiDAR, ground-penetrating radar, and AI-driven pattern recognition, TerraQuest can identify buried structures across the entire survey area in a single deployment.",
-    result: "When activated, TerraQuest scans the entire grid and reveals the locations of ALL remaining hidden structures. This powerful tool can only be used ONCE per mission and must be unlocked by finding 3 structures first.",
+    shortDesc: "Bonus: Massive 6x6 Scan + Reveal",
+    subtitle: "Experimental Hybrid Prototype",
+    description: "A prototype autonomous vehicle that combines aerial surveillance with ground-penetrating radar. This is classified tech available only to top-tier surveyors.",
+    science: "By engaging multiple sensor arrays simultaneously, the TerraQuest can triangulate anomaly data across a vast area, effectively 'solving' the grid in its immediate vicinity.",
+    result: "Deploys a massive 6x6 scan that INSTANTLY REVEALS any artifacts within its radius. Use this wisely to clear huge sections of the map in a single turn.",
     isSpecial: true,
   },
 ];
@@ -96,7 +96,7 @@ export default function ToolSelector({
 
   if (!isOpen) return null;
 
-  const isTerraQuestLocked = false;
+  const isTerraQuestLocked = structuresFound < 3;
 
   const handleSelect = (toolId: string) => {
     if (toolId === 'terraquest') {
