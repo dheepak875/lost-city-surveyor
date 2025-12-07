@@ -41,7 +41,7 @@ export default function AuthScreen({ onLogin, onViewLeaderboard }: AuthScreenPro
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch("/api/leaderboard?limit=10");
+      const response = await fetch("/api/leaderboard?limit=5");
       const data = await response.json();
       if (Array.isArray(data)) {
         setLeaderboard(data);
@@ -88,181 +88,175 @@ export default function AuthScreen({ onLogin, onViewLeaderboard }: AuthScreenPro
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] flex items-center justify-center p-4 overflow-auto">
-      <div className="w-full max-w-5xl flex flex-col lg:flex-row gap-6">
-        <div className="flex-1 space-y-6 min-w-0">
-          <div className="text-center lg:text-left">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#00ff41] mb-2 font-['Rajdhani']">
-              LOST CITY SURVEYOR
+    <div className="min-h-screen bg-[#0a0e1a] flex items-center justify-center p-4 overflow-auto font-sans text-[#00ff41]">
+      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 py-8">
+
+        {/* LEFT COLUMN: Educational & Game Info */}
+        <div className="space-y-8 animate-in fade-in slide-in-from-left duration-700">
+          <div>
+            <h1 className="text-4xl md:text-6xl font-black mb-2 font-['Rajdhani'] tracking-tighter bg-gradient-to-r from-[#00ff41] to-emerald-600 bg-clip-text text-transparent">
+              UNCHARTED RUINS
             </h1>
-            <p className="text-[rgba(0,255,65,0.6)] text-xs sm:text-sm font-['Share_Tech_Mono']">
+            <p className="text-xl md:text-2xl text-[rgba(0,255,65,0.8)] font-['Share_Tech_Mono']">
               ARCHAEOLOGICAL GRID RECONNAISSANCE
             </p>
           </div>
 
-          <div className="bg-[rgba(0,255,65,0.05)] border border-[rgba(0,255,65,0.3)] rounded-lg p-6 shadow-[0_0_20px_rgba(0,255,65,0.1)]">
-            <div className="flex gap-2 mb-6">
+          <div className="bg-[rgba(0,255,65,0.05)] border-l-4 border-[#00ff41] p-6 rounded-r-lg">
+            <h3 className="text-xl font-bold mb-3 font-['Rajdhani'] flex items-center gap-2">
+              <span className="text-2xl">📡</span> THE SCIENCE OF DISCOVERY
+            </h3>
+            <p className="text-[rgba(0,255,65,0.7)] leading-relaxed mb-4">
+              Real-world archaeology isn't just digging with shovels. Modern surveyors use
+              <strong className="text-[#00ff41]"> LiDAR (Light Detection and Ranging)</strong> to strip away vegetation digitally and
+              <strong className="text-[#00ff41]"> GPR (Ground Penetrating Radar)</strong> to "see" underground walls before breaking ground.
+            </p>
+            <p className="text-[rgba(0,255,65,0.7)] leading-relaxed">
+              In this simulation, you take command of these authentic tools. Your mission is to locate lost ancient structures while carefully managing a research budget. Every scan costs money—precision is your most valuable asset.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-[#0f1623] p-5 rounded border border-[rgba(0,255,65,0.2)]">
+              <div className="text-3xl mb-2">🛰️</div>
+              <h4 className="font-bold font-['Rajdhani'] mb-1">SCAN</h4>
+              <p className="text-sm text-[rgba(0,255,65,0.6)]">Use satellite multispectral imaging to find broad areas of interest.</p>
+            </div>
+            <div className="bg-[#0f1623] p-5 rounded border border-[rgba(0,255,65,0.2)]">
+              <div className="text-3xl mb-2">🚁</div>
+              <h4 className="font-bold font-['Rajdhani'] mb-1">LiDAR</h4>
+              <p className="text-sm text-[rgba(0,255,65,0.6)]">Deploy drones to measure proximity to buried structures.</p>
+            </div>
+            <div className="bg-[#0f1623] p-5 rounded border border-[rgba(0,255,65,0.2)]">
+              <div className="text-3xl mb-2">📡</div>
+              <h4 className="font-bold font-['Rajdhani'] mb-1">GPR</h4>
+              <p className="text-sm text-[rgba(0,255,65,0.6)]">Ping specific tiles to confirm walls beneath the soil.</p>
+            </div>
+            <div className="bg-[#0f1623] p-5 rounded border border-[rgba(0,255,65,0.2)]">
+              <div className="text-3xl mb-2">⛏️</div>
+              <h4 className="font-bold font-['Rajdhani'] mb-1">EXCAVATE</h4>
+              <p className="text-sm text-[rgba(0,255,65,0.6)]">Dig to reveal the truth and claim your discovery.</p>
+            </div>
+          </div>
+
+          <div className="hidden lg:block">
+            <div className="flex items-center justify-between border-b border-[rgba(0,255,65,0.2)] pb-2 mb-4">
+              <h3 className="font-bold font-['Rajdhani'] text-lg">TOP AGENTS</h3>
+              <button onClick={onViewLeaderboard} className="text-xs text-[rgba(0,255,65,0.6)] hover:text-[#00ff41]">VIEW ALL</button>
+            </div>
+            <div className="space-y-2">
+              {leaderboardLoading ? (
+                <div className="text-xs text-[rgba(0,255,65,0.4)]">LOADING TRANSMISSION...</div>
+              ) : leaderboard.length === 0 ? (
+                <div className="text-xs text-[rgba(0,255,65,0.4)]">NO RECORDS FOUND</div>
+              ) : (
+                leaderboard.map((entry, i) => (
+                  <div key={i} className="flex justify-between items-center text-sm font-['Share_Tech_Mono']">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[rgba(0,255,65,0.4)]">#{i + 1}</span>
+                      <span className="text-[#00ff41]">{entry.gamertag}</span>
+                    </div>
+                    <span className="text-[rgba(0,255,65,0.7)]">${entry.finalFunds.toLocaleString()}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: Auth Box */}
+        <div className="flex flex-col justify-center animate-in fade-in slide-in-from-right duration-700 delay-100">
+          <div className="bg-[#0f1623] border border-[rgba(0,255,65,0.3)] rounded-xl p-8 shadow-[0_0_50px_rgba(0,255,65,0.15)] relative overflow-hidden">
+            {/* Decorative corners */}
+            <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[#00ff41] rounded-tl-xl"></div>
+            <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-[#00ff41] rounded-br-xl"></div>
+
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold font-['Rajdhani'] mb-2">ACCESS TERMINAL</h2>
+              <div className="h-1 w-24 bg-[#00ff41] mx-auto rounded-full opacity-50"></div>
+            </div>
+
+            <div className="flex gap-2 mb-8 bg-[rgba(0,255,65,0.05)] p-1 rounded-lg">
               <Button
                 data-testid="button-login-tab"
-                variant={mode === "login" ? "default" : "outline"}
                 onClick={() => setMode("login")}
-                className="flex-1 bg-[rgba(0,255,65,0.1)] hover:bg-[rgba(0,255,65,0.2)] border-[rgba(0,255,65,0.3)] text-[#00ff41]"
+                className={`flex-1 font-['Rajdhani'] font-bold tracking-wider ${mode === "login" ? 'bg-[#00ff41] text-black hover:bg-[#00dd35]' : 'bg-transparent text-[rgba(0,255,65,0.6)] hover:bg-[rgba(0,255,65,0.1)] hover:text-[#00ff41]'}`}
               >
                 LOGIN
               </Button>
               <Button
                 data-testid="button-register-tab"
-                variant={mode === "register" ? "default" : "outline"}
                 onClick={() => setMode("register")}
-                className="flex-1 bg-[rgba(0,255,65,0.1)] hover:bg-[rgba(0,255,65,0.2)] border-[rgba(0,255,65,0.3)] text-[#00ff41]"
+                className={`flex-1 font-['Rajdhani'] font-bold tracking-wider ${mode === "register" ? 'bg-[#00ff41] text-black hover:bg-[#00dd35]' : 'bg-transparent text-[rgba(0,255,65,0.6)] hover:bg-[rgba(0,255,65,0.1)] hover:text-[#00ff41]'}`}
               >
                 REGISTER
               </Button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <Label htmlFor="gamertag" className="text-[#00ff41] font-['Share_Tech_Mono']">
-                    GAMERTAG
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <Label htmlFor="gamertag" className="font-['Share_Tech_Mono'] text-xs tracking-widest text-[rgba(0,255,65,0.7)]">
+                    AGENT IDENTITY
                   </Label>
                   {mode === "register" && (
                     <button
                       type="button"
-                      data-testid="button-generate-gamertag"
                       onClick={() => setGamertag(generateRandomGamertag())}
-                      className="text-xs text-cyan-400 hover:text-cyan-300 font-['Share_Tech_Mono'] flex items-center gap-1"
+                      className="text-[10px] text-cyan-400 hover:text-cyan-300 font-['Share_Tech_Mono'] flex items-center gap-1 uppercase tracking-wider"
                     >
-                      🎲 GENERATE
+                      🎲 Generate
                     </button>
                   )}
                 </div>
                 <Input
                   id="gamertag"
-                  data-testid="input-gamertag"
                   type="text"
                   value={gamertag}
                   onChange={(e) => setGamertag(e.target.value)}
                   required
-                  className="bg-[rgba(0,0,0,0.3)] border-[rgba(0,255,65,0.3)] text-[#00ff41] placeholder:text-[rgba(0,255,65,0.3)]"
-                  placeholder={mode === "register" ? "Click GENERATE or type your own" : "Enter agent codename"}
+                  className="bg-[rgba(0,0,0,0.3)] border-[rgba(0,255,65,0.3)] text-[#00ff41] placeholder:text-[rgba(0,255,65,0.2)] h-12 font-['Share_Tech_Mono'] text-lg focus:border-[#00ff41] focus:ring-[#00ff41]"
+                  placeholder={mode === "register" ? "Choose codename..." : "Enter codename..."}
                 />
               </div>
 
-              <div>
-                <Label htmlFor="password" className="text-[#00ff41] font-['Share_Tech_Mono']">
-                  ACCESS CODE
+              <div className="space-y-2">
+                <Label htmlFor="password" className="font-['Share_Tech_Mono'] text-xs tracking-widest text-[rgba(0,255,65,0.7)]">
+                  SECURITY KEY
                 </Label>
                 <Input
                   id="password"
-                  data-testid="input-password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-[rgba(0,0,0,0.3)] border-[rgba(0,255,65,0.3)] text-[#00ff41] placeholder:text-[rgba(0,255,65,0.3)]"
-                  placeholder="Enter security code"
+                  className="bg-[rgba(0,0,0,0.3)] border-[rgba(0,255,65,0.3)] text-[#00ff41] placeholder:text-[rgba(0,255,65,0.2)] h-12 font-['Share_Tech_Mono'] text-lg focus:border-[#00ff41] focus:ring-[#00ff41]"
+                  placeholder="••••••••"
                 />
               </div>
 
               {error && (
-                <div data-testid="text-error" className="text-red-400 text-sm font-['Share_Tech_Mono'] bg-[rgba(255,0,0,0.1)] p-2 rounded border border-red-900">
-                  {error}
+                <div className="text-red-400 text-xs font-['Share_Tech_Mono'] bg-[rgba(255,0,0,0.1)] p-3 rounded border border-red-900/50 flex items-center gap-2">
+                  <span>⚠️</span> {error}
                 </div>
               )}
 
               <Button
-                data-testid="button-submit"
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#00ff41] text-black hover:bg-[#00dd35] font-['Rajdhani'] font-bold"
+                className="w-full bg-[#00ff41] text-black hover:bg-[#00dd35] font-['Rajdhani'] font-bold text-lg h-12 tracking-widest shadow-[0_0_20px_rgba(0,255,65,0.3)] hover:shadow-[0_0_30px_rgba(0,255,65,0.5)] transition-all duration-300"
               >
-                {loading ? "CONNECTING..." : mode === "login" ? "AUTHENTICATE" : "CREATE AGENT"}
+                {loading ? "ESTABLISHING UPLINK..." : mode === "login" ? "INITIALIZE SESSION" : "REGISTER AGENT"}
               </Button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-[rgba(0,255,65,0.2)]">
+            <div className="mt-8 pt-6 border-t border-[rgba(0,255,65,0.2)]">
               <Button
-                data-testid="button-free-play"
                 variant="outline"
                 onClick={handleFreePlay}
-                className="w-full border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 font-['Rajdhani'] font-bold mb-3"
+                className="w-full border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-300 font-['Rajdhani'] font-bold tracking-wider"
               >
-                🎮 FREE PLAY (No Registration)
-              </Button>
-              <p className="text-center text-xs text-[rgba(0,255,65,0.4)] font-['Share_Tech_Mono']">
-                Scores won't be saved to leaderboard
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center text-xs text-[rgba(0,255,65,0.4)] font-['Share_Tech_Mono']">
-            <p>BUDGET TRACKING • COMPETITIVE SCORING</p>
-            <p className="mt-1">NO PERSONAL DATA COLLECTION</p>
-          </div>
-        </div>
-
-        <div className="w-full lg:flex-1 lg:max-w-sm">
-          <div className="bg-[rgba(0,255,65,0.05)] border border-[rgba(0,255,65,0.3)] rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,255,65,0.1)]">
-            <div className="bg-[rgba(0,255,65,0.1)] px-4 py-3 border-b border-[rgba(0,255,65,0.2)]">
-              <h2 className="text-lg font-bold text-[#00ff41] font-['Rajdhani'] text-center">
-                🏆 TOP SURVEYORS
-              </h2>
-            </div>
-
-            {leaderboardLoading ? (
-              <div className="p-8 text-center text-[rgba(0,255,65,0.6)] font-['Share_Tech_Mono'] text-sm">
-                LOADING...
-              </div>
-            ) : leaderboard.length === 0 ? (
-              <div className="p-8 text-center">
-                <div className="text-[rgba(0,255,65,0.6)] font-['Share_Tech_Mono'] text-sm mb-2">
-                  NO SURVEYS COMPLETED
-                </div>
-                <div className="text-[rgba(0,255,65,0.4)] font-['Share_Tech_Mono'] text-xs">
-                  Be the first to excavate all structures!
-                </div>
-              </div>
-            ) : (
-              <div className="divide-y divide-[rgba(0,255,65,0.1)]">
-                {leaderboard.map((entry, index) => (
-                  <div
-                    key={index}
-                    data-testid={`leaderboard-entry-${index}`}
-                    className="px-4 py-3 flex items-center gap-3 hover:bg-[rgba(0,255,65,0.05)] transition-colors"
-                  >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold font-['Rajdhani'] text-sm ${index === 0 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50' :
-                        index === 1 ? 'bg-gray-400/20 text-gray-300 border border-gray-400/50' :
-                          index === 2 ? 'bg-orange-500/20 text-orange-400 border border-orange-500/50' :
-                            'bg-[rgba(0,255,65,0.1)] text-[rgba(0,255,65,0.6)] border border-[rgba(0,255,65,0.2)]'
-                      }`}>
-                      {index + 1}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[#00ff41] font-['Share_Tech_Mono'] text-sm truncate">
-                        {entry.gamertag}
-                      </div>
-                      <div className="text-[rgba(0,255,65,0.5)] font-['Share_Tech_Mono'] text-xs">
-                        {entry.structuresFound}/5 found • {entry.actionsUsed} actions
-                      </div>
-                    </div>
-                    <div className={`font-bold font-['Rajdhani'] text-right ${entry.finalFunds >= 0 ? 'text-[#00ff41]' : 'text-red-400'
-                      }`}>
-                      ${entry.finalFunds.toLocaleString()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="p-4 border-t border-[rgba(0,255,65,0.2)]">
-              <Button
-                data-testid="button-view-full-leaderboard"
-                variant="ghost"
-                onClick={onViewLeaderboard}
-                className="w-full text-[rgba(0,255,65,0.7)] hover:text-[#00ff41] hover:bg-[rgba(0,255,65,0.1)] text-sm"
-              >
-                VIEW FULL LEADERBOARD →
+                🎮 BYPASS SECURITY (TRIAL MODE)
               </Button>
             </div>
           </div>

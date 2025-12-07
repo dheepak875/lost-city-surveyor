@@ -96,7 +96,7 @@ export default function ToolSelector({
 
   if (!isOpen) return null;
 
-  const isTerraQuestLocked = structuresFound < 3;
+  const isTerraQuestLocked = false;
 
   const handleSelect = (toolId: string) => {
     if (toolId === 'terraquest') {
@@ -139,7 +139,20 @@ export default function ToolSelector({
                 data-testid={`button-select-tool-${tool.id}`}
               >
                 <div className="tool-compact-icon">
-                  {isLocked ? '🔒' : isUsed ? '✅' : (tool.image ? <img src={tool.image} alt={tool.name} className="tool-icon-img" style={{ width: '32px', height: '32px', objectFit: 'contain' }} /> : tool.icon)}
+                  {isLocked ? '🔒' : isUsed ? '✅' : (
+                    tool.image ?
+                      <img
+                        src={tool.image}
+                        alt={tool.name}
+                        className={`tool-icon-img ${tool.isSpecial ? 'special-icon-img' : ''}`}
+                        style={{
+                          width: tool.isSpecial ? '48px' : '32px',
+                          height: tool.isSpecial ? '48px' : '32px',
+                          objectFit: 'contain'
+                        }}
+                      /> :
+                      tool.icon
+                  )}
                 </div>
                 <div className="tool-compact-info">
                   <div className="tool-compact-name">
