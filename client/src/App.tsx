@@ -22,7 +22,7 @@ const toolNames: Record<string, string> = {
 
 const toolIcons: Record<string, string> = {
   scan: "🛰️",
-  lidar: "🚁",
+  lidar: "/game-icons/lidar-drone.png",
   drill: "📡",
   excavate: "⛏️",
   terraquest: "🤖",
@@ -248,7 +248,11 @@ function App() {
           data-testid="button-open-tools"
         >
           <div className="tool-selector-btn-content">
-            <span className="tool-selector-btn-icon">{toolIcons[currentTool]}</span>
+            <span className="tool-selector-btn-icon">
+              {toolIcons[currentTool].startsWith('/')
+                ? <img src={toolIcons[currentTool]} alt="" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                : toolIcons[currentTool]}
+            </span>
             <div className="tool-selector-btn-info">
               <span className="tool-selector-btn-label">EQUIPPED TOOL</span>
               <span className="tool-selector-btn-name">{toolNames[currentTool]}</span>

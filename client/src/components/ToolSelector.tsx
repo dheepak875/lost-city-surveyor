@@ -11,6 +11,7 @@ interface Tool {
   science: string;
   result: string;
   isSpecial?: boolean;
+  image?: string;
 }
 
 const tools: Tool[] = [
@@ -30,6 +31,7 @@ const tools: Tool[] = [
     name: "LiDAR Drone",
     cost: 100,
     icon: "🚁",
+    image: "/game-icons/lidar-drone.png",
     shortDesc: "2x2 proximity detection",
     subtitle: "Aerial Laser Scanning",
     description: "A drone flies overhead firing millions of laser pulses per second, measuring the precise distance to the ground surface.",
@@ -81,16 +83,16 @@ interface ToolSelectorProps {
   terraquestUsed?: boolean;
 }
 
-export default function ToolSelector({ 
-  isOpen, 
-  currentTool, 
-  onSelectTool, 
+export default function ToolSelector({
+  isOpen,
+  currentTool,
+  onSelectTool,
   onClose,
   structuresFound = 0,
   terraquestUsed = false
 }: ToolSelectorProps) {
   const [hoveredTool, setHoveredTool] = useState<string | null>(null);
-  
+
   if (!isOpen) return null;
 
   const isTerraQuestLocked = structuresFound < 3;
@@ -114,13 +116,13 @@ export default function ToolSelector({
           <h2>SELECT TOOL</h2>
           <button className="tool-selector-close" onClick={onClose} data-testid="button-close-tools">×</button>
         </div>
-        
+
         <div className="tool-compact-grid">
           {tools.map((tool) => {
             const isLocked = tool.id === 'terraquest' && isTerraQuestLocked;
             const isUsed = tool.id === 'terraquest' && terraquestUsed;
             const isDisabled = isLocked || isUsed;
-            
+
             return (
               <div
                 key={tool.id}
@@ -136,7 +138,7 @@ export default function ToolSelector({
                 data-testid={`button-select-tool-${tool.id}`}
               >
                 <div className="tool-compact-icon">
-                  {isLocked ? '🔒' : isUsed ? '✅' : tool.icon}
+                  {isLocked ? '🔒' : isUsed ? '✅' : (tool.image ? <img src={tool.image} alt={tool.name} className="tool-icon-img" style={{ width: '32px', height: '32px', objectFit: 'contain' }} /> : tool.icon)}
                 </div>
                 <div className="tool-compact-info">
                   <div className="tool-compact-name">
@@ -169,7 +171,7 @@ export default function ToolSelector({
             </div>
           </div>
         )}
-        
+
         {!hoveredToolData && (
           <div className="tool-detail-panel tool-detail-hint">
             <p>Hover over a tool to see detailed information</p>
