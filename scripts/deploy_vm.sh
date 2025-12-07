@@ -48,7 +48,7 @@ npm run db:push
 echo "[7/8] Starting Process Manager..."
 sudo npm install -g pm2 > /dev/null 2>&1
 pm2 delete $APP_NAME 2>/dev/null || true
-pm2 start dist/index.js --name "$APP_NAME"
+pm2 start dist/index.cjs --name "$APP_NAME"
 pm2 save
 # Note: Skipping 'pm2 startup' automation as it requires human interaction often, but app is running now.
 
