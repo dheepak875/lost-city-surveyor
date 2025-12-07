@@ -305,11 +305,12 @@ export class Game {
             this.terraquestUsed = true;
             this.uiCallbacks.logMessage("TERRAQUEST DEPLOYED! Analyzing sector...", "success");
 
-            // Define 6x6 area centered on click
-            const rStart = Math.max(0, pos.r - 2);
-            const rEnd = Math.min(this.grid.rows, pos.r + 4);
-            const cStart = Math.max(0, pos.c - 2);
-            const cEnd = Math.min(this.grid.cols, pos.c + 4);
+            // Define massive 10x10 area centered on click
+            // Scan is 5x5, so this is 4x larger area significantly "bigger"
+            const rStart = Math.max(0, pos.r - 5);
+            const rEnd = Math.min(this.grid.rows, pos.r + 5);
+            const cStart = Math.max(0, pos.c - 5);
+            const cEnd = Math.min(this.grid.cols, pos.c + 5);
 
             let newDiscoveries = 0;
 
