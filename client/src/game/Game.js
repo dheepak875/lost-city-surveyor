@@ -305,21 +305,29 @@ export class Game {
             this.terraquestUsed = true;
             this.uiCallbacks.logMessage("TERRAQUEST DEPLOYED! Analyzing sector...", "success");
 
-            // Define massive 10x10 area centered on click
-            // Scan is 5x5, so this is 4x larger area significantly "bigger"
-            const rStart = Math.max(0, pos.r - 5);
-            const rEnd = Math.min(this.grid.rows, pos.r + 5);
-            const cStart = Math.max(0, pos.c - 5);
-            const cEnd = Math.min(this.grid.cols, pos.c + 5);
+            // Define massive 14x14 area centered on click
+            const rStart = Math.max(0, pos.r - 7);
+            const rEnd = Math.min(this.grid.rows, pos.r + 7);
+            const cStart = Math.max(0, pos.c - 7);
+            const cEnd = Math.min(this.grid.cols, pos.c + 7);
+
+            // Trigger visual shockwave
+            // Center of the clicked tile in pixels
+            const centerX = this.renderer.offsetX + pos.c * this.renderer.cellSize + this.renderer.cellSize / 2;
+            const centerY = this.renderer.offsetY + pos.r * this.renderer.cellSize + this.renderer.cellSize / 2;
+            this.renderer.drawShockwave(centerX, centerY);
 
             let newDiscoveries = 0;
 
-            // Loop through the 6x6 area
+            // Loop through the 14x14 area
             for (let r = rStart; r < rEnd; r++) {
                 for (let c = cStart; c < cEnd; c++) {
                     const idx = r * this.grid.cols + c;
 
-                    // Force excavate this tile
+                    // Mark as drilled to show we scanned it (efficiency feedback)
+                    this.grid.drilled[idx] = true;
+
+                    // Also force excavate
                     this.grid.excavated[idx] = true;
 
                     // Check if this reveals a structure
@@ -344,7 +352,7 @@ export class Game {
                     setTimeout(() => this.winGame(), 2000);
                 }
             } else {
-                this.uiCallbacks.logMessage("TerraQuest scan complete. Sector cleared.");
+                this.uiCallbacks.logMessage("TerraQuest scan complete. Sector cleared (14x14 area).");
             }
 
             // Switch back to excavate tool

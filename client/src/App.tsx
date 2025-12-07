@@ -39,11 +39,13 @@ function App() {
   const [toolSelectorOpen, setToolSelectorOpen] = useState(false);
   const [currentTool, setCurrentTool] = useState("scan");
 
+  const [gameId, setGameId] = useState(0); // Added gameId state
+
   useEffect(() => {
-    if (screen === "game" && !initializedRef.current) {
+    const userForGame = user || { userId: "guest", gamertag: "GUEST" }; // Define userForGame here
+    if (screen === "game" && containerRef.current && !initializedRef.current) {
       initializedRef.current = true;
       setTimeout(() => {
-        const userForGame = user || { userId: "guest", gamertag: "GUEST" };
         gameRef.current = initGame(userForGame, (scoreData: GameData) => {
           setCompletionData(scoreData);
         });
@@ -55,7 +57,7 @@ function App() {
         gameRef.current.input.destroy();
       }
     };
-  }, [screen, user]);
+  }, [screen, user, gameId]); // Added gameId dependency
 
   const handleSelectTool = (toolId: string) => {
     setCurrentTool(toolId);
@@ -159,6 +161,26 @@ function App() {
     setScreen("auth");
   };
 
+  const handleRestart = () => {
+    initializedRef.current = false;
+    if (gameRef.current && gameRef.current.input) {
+      gameRef.current.input.destroy();
+    }
+    gameRef.current = null;
+    setCompletionData(null);
+    setCurrentTool("scan");
+
+    const fundsEl = document.getElementById('funds-display');
+    const logEl = document.getElementById('message-log');
+    const targetList = document.getElementById('target-list');
+
+    if (fundsEl) fundsEl.innerText = '$5,000';
+    if (logEl) logEl.innerHTML = '';
+    if (targetList) targetList.innerHTML = '';
+
+    setGameId(prev => prev + 1); // Increment gameId to force re-initialization
+  };
+
   if (screen === "auth") {
     return <AuthScreen onLogin={handleLogin} onViewLeaderboard={handleViewLeaderboard} />;
   }
@@ -199,9 +221,18 @@ function App() {
       <div id="hud-container">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl">UNCHARTED RUINS</h1>
-          <div className="text-xs text-[rgba(0,255,65,0.7)]">
-            {isFreePlay && <span className="text-cyan-400">[FREE PLAY] </span>}
-            AGENT: {displayName}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleRestart}
+              className="p-2 text-red-500 hover:bg-red-500/10 rounded-full transition-colors"
+              aria-label="Abort Mission"
+            >
+              ⚠ ABORT
+            </button>
+            <div className="text-xs text-[rgba(0,255,65,0.7)]">
+              {isFreePlay && <span className="text-cyan-400">[FREE PLAY] </span>}
+              AGENT: {displayName}
+            </div>
           </div>
         </div>
 
