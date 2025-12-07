@@ -25,7 +25,7 @@ const toolIcons: Record<string, string> = {
   lidar: "/game-icons/lidar-drone.png",
   drill: "📡",
   excavate: "⛏️",
-  terraquest: "🤖",
+  terraquest: "/game-icons/terraquest.png",
 };
 
 function App() {

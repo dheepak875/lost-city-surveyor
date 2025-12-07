@@ -65,6 +65,7 @@ const tools: Tool[] = [
     name: "TerraQuest Explorer",
     cost: 60,
     icon: "🤖",
+    image: "/game-icons/terraquest.png",
     shortDesc: "Reveals ALL hidden structures (one-time use)",
     subtitle: "Autonomous Hybrid Vehicle",
     description: "TerraQuest - an unmanned autonomous vehicle that can fly like a drone and drive like a rover, equipped to see above and below the earth's surface combined with a unique Archaeological Scoring system.",
