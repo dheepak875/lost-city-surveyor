@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "@/style.css";
-import { initGame } from "@/game/main.js";
+import { initGame } from "@/game/main";
 import AuthScreen from "@/components/AuthScreen";
 import LeaderboardScreen from "@/components/LeaderboardScreen";
 import CompletionOverlay from "@/components/CompletionOverlay";
@@ -49,7 +49,7 @@ function App() {
         });
       }, 100);
     }
-    
+
     return () => {
       if (gameRef.current && gameRef.current.input) {
         gameRef.current.input.destroy();
@@ -66,14 +66,14 @@ function App() {
 
   const submitScore = async () => {
     if (!completionData) return;
-    
+
     // Free play mode - just go to leaderboard without submitting
     if (isFreePlay || !user) {
       setCompletionData(null);
       setScreen("leaderboard");
       return;
     }
-    
+
     setIsSubmitting(true);
     try {
       await fetch("/api/scores", {
@@ -97,20 +97,20 @@ function App() {
     setCompletionData(null);
     initializedRef.current = false;
     setCurrentTool("scan");
-    
+
     if (gameRef.current && gameRef.current.input) {
       gameRef.current.input.destroy();
     }
     gameRef.current = null;
-    
+
     const fundsEl = document.getElementById('funds-display');
     const logEl = document.getElementById('message-log');
     const targetList = document.getElementById('target-list');
-    
+
     if (fundsEl) fundsEl.innerText = '$5,000';
     if (logEl) logEl.innerHTML = '';
     if (targetList) targetList.innerHTML = '';
-    
+
     setTimeout(() => {
       initializedRef.current = true;
       const userForGame = user || { userId: "guest", gamertag: "GUEST" };
@@ -182,7 +182,7 @@ function App() {
           isFreePlay={isFreePlay}
         />
       )}
-      
+
       <ToolSelector
         isOpen={toolSelectorOpen}
         currentTool={currentTool}
@@ -191,14 +191,14 @@ function App() {
         structuresFound={gameRef.current?.getStructuresFoundCount?.() || 0}
         terraquestUsed={gameRef.current?.isTerraQuestUsed?.() || false}
       />
-      
+
       <div id="canvas-container">
         <canvas id="game-canvas"></canvas>
       </div>
 
       <div id="hud-container">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl">LOST CITY SURVEYOR</h1>
+          <h1 className="text-2xl">UNCHARTED RUINS</h1>
           <div className="text-xs text-[rgba(0,255,65,0.7)]">
             {isFreePlay && <span className="text-cyan-400">[FREE PLAY] </span>}
             AGENT: {displayName}
@@ -214,7 +214,7 @@ function App() {
             <span>STATUS</span>
             <span className="stat-value" style={{ color: "#00ff41" }}>ONLINE</span>
           </div>
-          
+
           <div className="mt-4 pt-4 border-t border-[rgba(0,255,65,0.2)]">
             <div className="text-xs mb-2 text-[rgba(0,255,65,0.8)]">TARGET STRUCTURES</div>
             <div id="target-list" className="target-list">
@@ -225,9 +225,9 @@ function App() {
             <div className="text-xs mb-1 text-[rgba(0,255,65,0.8)]">🛰️ SCAN DENSITY</div>
             <div className="h-2 w-full rounded-sm bg-gradient-to-r from-[rgba(30,50,70,0.8)] via-[rgba(0,255,255,0.5)] to-[rgba(255,0,255,0.8)]"></div>
             <div className="flex justify-between text-[10px] text-[rgba(0,255,65,0.5)] mt-1 font-mono">
-               <span>EMPTY</span>
-               <span>TRACE</span>
-               <span>DENSE</span>
+              <span>EMPTY</span>
+              <span>TRACE</span>
+              <span>DENSE</span>
             </div>
           </div>
 
@@ -235,14 +235,14 @@ function App() {
             <div className="text-xs mb-1 text-[rgba(255,165,0,0.9)]">🚁 LiDAR PROXIMITY</div>
             <div className="h-2 w-full rounded-sm bg-gradient-to-r from-[rgba(30,60,90,0.8)] via-[rgba(255,165,0,0.6)] to-[rgba(255,50,50,0.9)]"></div>
             <div className="flex justify-between text-[10px] text-[rgba(255,165,0,0.6)] mt-1 font-mono">
-               <span>FAR</span>
-               <span>NEARBY</span>
-               <span>CLOSE</span>
+              <span>FAR</span>
+              <span>NEARBY</span>
+              <span>CLOSE</span>
             </div>
           </div>
         </div>
 
-        <button 
+        <button
           className="tool-selector-btn"
           onClick={() => setToolSelectorOpen(true)}
           data-testid="button-open-tools"

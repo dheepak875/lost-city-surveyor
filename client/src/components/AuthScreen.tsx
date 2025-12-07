@@ -43,7 +43,11 @@ export default function AuthScreen({ onLogin, onViewLeaderboard }: AuthScreenPro
     try {
       const response = await fetch("/api/leaderboard?limit=10");
       const data = await response.json();
-      setLeaderboard(data);
+      if (Array.isArray(data)) {
+        setLeaderboard(data);
+      } else {
+        setLeaderboard([]);
+      }
     } catch (error) {
       console.error("Failed to fetch leaderboard:", error);
     } finally {
@@ -205,7 +209,7 @@ export default function AuthScreen({ onLogin, onViewLeaderboard }: AuthScreenPro
                 🏆 TOP SURVEYORS
               </h2>
             </div>
-            
+
             {leaderboardLoading ? (
               <div className="p-8 text-center text-[rgba(0,255,65,0.6)] font-['Share_Tech_Mono'] text-sm">
                 LOADING...
@@ -227,12 +231,11 @@ export default function AuthScreen({ onLogin, onViewLeaderboard }: AuthScreenPro
                     data-testid={`leaderboard-entry-${index}`}
                     className="px-4 py-3 flex items-center gap-3 hover:bg-[rgba(0,255,65,0.05)] transition-colors"
                   >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold font-['Rajdhani'] text-sm ${
-                      index === 0 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50' :
-                      index === 1 ? 'bg-gray-400/20 text-gray-300 border border-gray-400/50' :
-                      index === 2 ? 'bg-orange-500/20 text-orange-400 border border-orange-500/50' :
-                      'bg-[rgba(0,255,65,0.1)] text-[rgba(0,255,65,0.6)] border border-[rgba(0,255,65,0.2)]'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold font-['Rajdhani'] text-sm ${index === 0 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50' :
+                        index === 1 ? 'bg-gray-400/20 text-gray-300 border border-gray-400/50' :
+                          index === 2 ? 'bg-orange-500/20 text-orange-400 border border-orange-500/50' :
+                            'bg-[rgba(0,255,65,0.1)] text-[rgba(0,255,65,0.6)] border border-[rgba(0,255,65,0.2)]'
+                      }`}>
                       {index + 1}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -243,16 +246,15 @@ export default function AuthScreen({ onLogin, onViewLeaderboard }: AuthScreenPro
                         {entry.structuresFound}/5 found • {entry.actionsUsed} actions
                       </div>
                     </div>
-                    <div className={`font-bold font-['Rajdhani'] text-right ${
-                      entry.finalFunds >= 0 ? 'text-[#00ff41]' : 'text-red-400'
-                    }`}>
+                    <div className={`font-bold font-['Rajdhani'] text-right ${entry.finalFunds >= 0 ? 'text-[#00ff41]' : 'text-red-400'
+                      }`}>
                       ${entry.finalFunds.toLocaleString()}
                     </div>
                   </div>
                 ))}
               </div>
             )}
-            
+
             <div className="p-4 border-t border-[rgba(0,255,65,0.2)]">
               <Button
                 data-testid="button-view-full-leaderboard"

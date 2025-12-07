@@ -1,4 +1,18 @@
+import "dotenv/config";
+import crypto from "crypto";
 import express, { type Request, Response, NextFunction } from "express";
+
+// Polyfill for Node < 20.12.0 required by Vite 7+
+if (typeof (crypto as any).hash !== 'function') {
+  (crypto as any).hash = (algorithm: string, data: crypto.BinaryLike, outputEncoding?: crypto.BinaryToTextEncoding) => {
+    const hash = crypto.createHash(algorithm);
+    hash.update(data);
+    if (outputEncoding) {
+      return hash.digest(outputEncoding);
+    }
+    return hash.digest();
+  };
+}
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
