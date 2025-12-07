@@ -38,6 +38,7 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toolSelectorOpen, setToolSelectorOpen] = useState(false);
   const [currentTool, setCurrentTool] = useState("scan");
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [gameId, setGameId] = useState(0); // Added gameId state
 
