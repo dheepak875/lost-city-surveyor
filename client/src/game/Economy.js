@@ -1,5 +1,5 @@
 export class Economy {
-    constructor(initialFunds = 5000) {
+    constructor(initialFunds = 8000) {
         this.funds = initialFunds;
         this.actionsUsed = 0;
         this.costs = {

@@ -110,7 +110,7 @@ function App() {
     const logEl = document.getElementById('message-log');
     const targetList = document.getElementById('target-list');
 
-    if (fundsEl) fundsEl.innerText = '$5,000';
+    if (fundsEl) fundsEl.innerText = '$8,000';
     if (logEl) logEl.innerHTML = '';
     if (targetList) targetList.innerHTML = '';
 
@@ -175,7 +175,7 @@ function App() {
     const logEl = document.getElementById('message-log');
     const targetList = document.getElementById('target-list');
 
-    if (fundsEl) fundsEl.innerText = '$5,000';
+    if (fundsEl) fundsEl.innerText = '$8,000';
     if (logEl) logEl.innerHTML = '';
     if (targetList) targetList.innerHTML = '';
 
@@ -215,7 +215,7 @@ function App() {
         terraquestUsed={gameRef.current?.isTerraQuestUsed?.() || false}
       />
 
-      <div id="canvas-container">
+      <div id="canvas-container" ref={containerRef}>
         <canvas id="game-canvas"></canvas>
       </div>
 
@@ -240,7 +240,7 @@ function App() {
         <div className="stat-panel">
           <div className="stat-row">
             <span>FUNDS</span>
-            <span id="funds-display" className="stat-value">$5,000</span>
+            <span id="funds-display" className="stat-value">$8,000</span>
           </div>
           <div className="stat-row">
             <span>STATUS</span>

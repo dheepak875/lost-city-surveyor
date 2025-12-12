@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../../../AarushFLL/FLL-Runalyzer"
+		},
+		{
+			"name": "lost-city-surveyor",
+			"path": "../../.."
+		}
+	],
+	"settings": {}
+}

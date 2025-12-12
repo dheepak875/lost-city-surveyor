@@ -6,7 +6,7 @@ export class Input {
         this.startPos = { x: 0, y: 0 };
         this.currentPos = { x: 0, y: 0 };
         this.isTouchDevice = 'ontouchstart' in window;
-        
+
         this.pendingAction = null;
         this.confirmTimeout = null;
         this.touchStartTime = 0;
@@ -40,12 +40,10 @@ export class Input {
             clientY = e.clientY;
         }
 
-        const scaleX = this.canvas.width / rect.width;
-        const scaleY = this.canvas.height / rect.height;
-
+        // Return CSS pixels relative to canvas top-left
         return {
-            x: (clientX - rect.left) * scaleX,
-            y: (clientY - rect.top) * scaleY
+            x: clientX - rect.left,
+            y: clientY - rect.top
         };
     }
 
@@ -54,7 +52,7 @@ export class Input {
             e.preventDefault();
             this.touchStartTime = Date.now();
         }
-        
+
         this.isDown = true;
         const coords = this.getCoords(e);
         this.startPos = coords;
@@ -69,7 +67,7 @@ export class Input {
 
     onMove(e) {
         if (e.type === 'touchmove') e.preventDefault();
-        
+
         const coords = this.getCoords(e);
         this.currentPos = coords;
 
@@ -84,7 +82,7 @@ export class Input {
         if (this.isDown) {
             this.isDown = false;
             const coords = this.getCoords(e);
-            
+
             if (this.isTouchDevice && (e.type === 'touchend' || e.type === 'touchcancel')) {
                 const holdDuration = Date.now() - this.touchStartTime;
                 const isLongPress = holdDuration >= this.LONG_PRESS_DURATION;
@@ -94,7 +92,7 @@ export class Input {
             }
         }
     }
-    
+
     destroy() {
         this.canvas.removeEventListener('mousedown', this.onDown);
         this.canvas.removeEventListener('mousemove', this.onMove);

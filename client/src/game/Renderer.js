@@ -251,34 +251,9 @@ export class Renderer {
 
     // Convert screen coords to grid coords
     toGridCoords(x, y) {
-        // Adjust for DPR in input handling if necessary (but Input.js handles CSS scaling)
-        // Input.js returns CSS pixels relative to canvas top-left.
-        // Renderer.resize sets internal scale, but visual size matches CSS.
-        // So we compare against CSS-based offset/size.
-
-        // But wait, input.js returns (clientX - rect.left) * scaleX.
-        // scaleX is canvas.width / rect.width = dpr.
-        // So input.js returns INTERNAL canvas coordinates (multiplied by DPR).
-
-        // Our offsets and cellSize are calculated in resize() using scaled context?
-        // No, resize() sets `this.ctx.scale(dpr, dpr)`.
-        // Meaning logic coordinates (offsetX, cellSize) should be in CSS PIXELS.
-        // But `canvas.width` is physical pixels.
-
-        // Let's correct:
-        // If ctx.scale(dpr, dpr) is used, then drawing commands use CSS pixel units.
-        // offsetX/cellSize should be in CSS pixels.
-
-        // Input.js:
-        // scaleX = canvas.width / rect.width = dpr.
-        // returns x * dpr.
-
-        // So if input returns 200 (on a 2x screen where css width is 100),
-        // and our logic expects 100... we need to divide by DPR.
-
-        const dpr = window.devicePixelRatio || 1;
-        const cssX = x / dpr;
-        const cssY = y / dpr;
+        // Inputs are now CSS pixels (from Input.js)
+        const cssX = x;
+        const cssY = y;
 
         const c = Math.floor((cssX - this.offsetX) / this.cellSize);
         const r = Math.floor((cssY - this.offsetY) / this.cellSize);
@@ -286,3 +261,4 @@ export class Renderer {
         return { r, c };
     }
 }
+

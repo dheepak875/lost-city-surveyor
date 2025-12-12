@@ -20,7 +20,7 @@ export class Game {
         this.grid = new Grid(20, 20);
         this.renderer = new Renderer(canvas, this.grid);
         this.input = new Input(canvas, this);
-        this.economy = new Economy(5000);
+        this.economy = new Economy(8000);
 
         this.tool = 'scan'; // scan, lidar, drill, excavate, terraquest
         this.activeScans = []; // {r, c, time} for multispectral
@@ -43,7 +43,7 @@ export class Game {
         this.loop = this.loop.bind(this);
         requestAnimationFrame(this.loop);
 
-        this.uiCallbacks.logMessage("System Online. Funds: $5000");
+        this.uiCallbacks.logMessage("System Online. Funds: $8000");
         this.uiCallbacks.logMessage("Select tool to begin survey.");
         this.uiCallbacks.updateTargets(this.grid.structures);
     }
@@ -134,6 +134,7 @@ export class Game {
 
     handleInputEnd(start, end) {
         const gridPos = this.renderer.toGridCoords(end.x, end.y);
+
         if (!this.isValid(gridPos)) {
             this.selection = null;
             return;
@@ -386,6 +387,20 @@ export class Game {
 
     loop(timestamp) {
         if (!this.isRunning) return;
+
+        // Auto-resize if canvas display size changes (handles initial layout delay)
+        const dpr = window.devicePixelRatio || 1;
+        const displayWidth = this.canvas.parentElement.clientWidth;
+        const displayHeight = this.canvas.parentElement.clientHeight;
+
+        // Check if internal resolution matches the displayed size * dpr
+        // We use a small tolerance or just strict check.
+        // Also check if cellSize is invalid (0)
+        if (this.renderer.cellSize <= 0 ||
+            Math.abs(this.canvas.width - displayWidth * dpr) > 5 ||
+            Math.abs(this.canvas.height - displayHeight * dpr) > 5) {
+            this.resize();
+        }
 
         const dt = timestamp - this.lastTime;
         this.lastTime = timestamp;
